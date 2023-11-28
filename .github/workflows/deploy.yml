@@ -15,7 +15,7 @@ jobs:
         packages: write
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: ghcr/${{github.repository_owner}}/${{github.event.repository.name}}
+      IMAGE_NAME: ghcr.io/${{github.repository_owner}}/${{github.event.repository.name}}
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
