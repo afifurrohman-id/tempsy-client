@@ -55,12 +55,8 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 // AuthLogin
 // TODO: More validation
 func AuthLogin(ctx *fiber.Ctx) error {
-	if ctx.Cookies("token") != "" {
-		return ctx.Redirect("/")
-	}
-
 	if ctx.Query("type", "oauth2") == "guest" {
-		agent := fiber.Get(os.Getenv("API_SERVER_URI") + "/files/auth/guest/token")
+		agent := fiber.Get(os.Getenv("API_SERVER_URI") + "/auth/guest/token")
 
 		apiRes := new(internal.Token)
 		statusCode, body, errs := agent.Struct(&apiRes)
@@ -69,7 +65,10 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		}
 
 		if statusCode != fiber.StatusOK {
-			return ctx.Render("pages/error", map[string]any{
+			if statusCode == fiber.StatusBadRequest {
+				return ctx.Redirect("/")
+			}
+			return ctx.Render("pages/error", map[string]string{
 				"title":   fmt.Sprintf("Error - %d", statusCode),
 				"message": string(body),
 			})
@@ -93,7 +92,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			HTTPOnly: os.Getenv("APP_ENV") == "production",
 		})
 
-		agent = fiber.Get(fmt.Sprintf("%s/files/auth/userinfo/me", os.Getenv("API_SERVER_URI")))
+		agent = fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URI")))
 		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
 
 		apiResUser := new(internal.User)
@@ -104,7 +103,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 
 		if statusCode != fiber.StatusOK {
 
-			return ctx.Render("pages/error", map[string]any{
+			return ctx.Render("pages/error", map[string]string{
 				"title":   fmt.Sprintf("Error - %d", statusCode),
 				"message": string(body),
 			})

@@ -1,6 +1,7 @@
 const MAX_FILE_NAME_LENGTH = 80
 
 function doUpload(file, handler) {
+
     const fileInfo = document.getElementById('file-info')
     fileInfo.innerHTML = `
                      ${file ? `<h4>Name: <code>${file.name.length > MAX_FILE_NAME_LENGTH ? `${file.name.substring(0, MAX_FILE_NAME_LENGTH)}...` : file.name}</code></h4>`:`<h4>No file selected</h4>`}
