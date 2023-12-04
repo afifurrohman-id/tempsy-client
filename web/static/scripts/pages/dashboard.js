@@ -10,10 +10,10 @@ doFile(async (file, metadata) => {
         method: 'POST',
         headers: {
             'Content-Type': file.type,
-            'X-File-Auto-Deleted-At': metadata.autoDeletedAt,
-            'X-File-Is-Public': metadata.isPublic,
-            'X-File-Name': file.name,
-            'X-File-Private-Url-Expires': metadata.xPrivateUrlExpires,
+            'File-Auto-Deleted-At': metadata.autoDeletedAt,
+            'File-Is-Public': metadata.isPublic,
+            'File-Name': file.name,
+            'File-Private-Url-Expires': metadata.xPrivateUrlExpires,
         },
         body: file,
     })
@@ -23,7 +23,7 @@ doFile(async (file, metadata) => {
         alert('Upload successfully')
         location.reload()
     } else {
-        const {error_description} = await res.json()
-        confirm(error_description+ ', Do you want to refresh the page?') && location.reload()
+        const {errorDescription} = await res.json()
+        confirm(errorDescription+ ', Do you want to refresh the page?') && location.reload()
     }
 })

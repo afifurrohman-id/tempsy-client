@@ -14,9 +14,9 @@ doFile(async (file, metadata) => {
         body: file,
         headers: {
             'Content-Type': file.type,
-            'X-File-Private-Url-Expires': metadata.xPrivateUrlExpires,
-            'X-File-Is-Public': metadata.isPublic,
-            'X-File-Auto-Deleted-At': metadata.autoDeletedAt
+            'File-Private-Url-Expires': metadata.xPrivateUrlExpires,
+            'File-Is-Public': metadata.isPublic,
+            'File-Auto-Deleted-At': metadata.autoDeletedAt
         }
     })
 
@@ -24,8 +24,8 @@ doFile(async (file, metadata) => {
         alert('Updated File successfully')
         location.reload()
     } else {
-        const {error_description} = await res.json()
-        confirm(error_description+ ' Do you want to refresh the page?') && location.reload()
+        const {errorDescription} = await res.json()
+        confirm(errorDescription+ ' Do you want to refresh the page?') && location.reload()
     }
 })
 
@@ -41,8 +41,8 @@ doFile(async (file, metadata) => {
                 const username = location.pathname.split('/')[2]
                 location.href = '/dashboard/' + username
             } else {
-                const {error_description} = await res.json()
-                confirm(error_description+ ', Do you want to refresh the page?') && location.reload()
+                const {errorDescription} = await res.json()
+                confirm(errorDescription+ ', Do you want to refresh the page?') && location.reload()
             }
         }
     })

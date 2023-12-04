@@ -58,7 +58,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 	if ctx.Query("type", "oauth2") == "guest" {
 		agent := fiber.Get(os.Getenv("API_SERVER_URI") + "/auth/guest/token")
 
-		apiRes := new(internal.Token)
+		apiRes := new(internal.GuestToken)
 		statusCode, body, errs := agent.Struct(&apiRes)
 		if len(errs) > 0 {
 			log.Panic()
