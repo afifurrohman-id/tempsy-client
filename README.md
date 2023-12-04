@@ -32,7 +32,7 @@ touch configs/.env
 
 - Insert Variable to `.env` file
 ```sh
-OAUTH2_CONFIG={"client_id": "EXAMPLE_CLIENT_ID","client_secret": "EXAMPLE_SECRET","callback_url": "https://example.com/auth","scopes": ["https://www.googleapis.com/auth/userinfo.profile"]}
+OAUTH2_CONFIG={"clientId": "EXAMPLE_CLIENT_ID","clientSecret": "EXAMPLE_SECRET","callbackUrl": "https://example.com/auth","scopes": ["https://www.googleapis.com/auth/userinfo.profile"]}
 APP_ENV=testing
 API_SERVER_URI=https://api.example.com
 PORT=8080
