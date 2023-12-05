@@ -14,7 +14,7 @@
 {{ template "components/nav" . }}
 <main>
     {{ with .user }}
-    <img src="{{.Picture}}" alt="Profile Picture {{.UserName}}">
+    <img src="{{.Picture}}" alt="Profile Picture {{.UserName}}" width="96" height="96">
     <h1>{{.UserName}}</h1>
     <p>Last Login: {{$.lastLogin}}</p>
     <p>Total Files Uploaded: {{$.total}}</p>
