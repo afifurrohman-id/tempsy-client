@@ -6,11 +6,13 @@
     font-family: "Cascadia Code", serif;
     font-weight: bolder;
 }
-
+body.dark .header-description {
+    color: rgb(128, 128, 128);
+}
 .header-description {
     text-align: center;
     font-size: 1rem;
-    color: rgb(128, 128, 128);
+    color: rgb(88, 88, 88);
     margin-bottom: 6em;
 }
 
