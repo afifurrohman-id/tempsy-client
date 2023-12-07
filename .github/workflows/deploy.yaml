@@ -5,12 +5,25 @@ on:
     branches: [main]
 
 jobs:
+  test:
+    name: Testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: build/Dockerfile
+
   deploy:
     name: Deploy to Production
     runs-on: ubuntu-latest
     environment:
       name: production
       url: ${{github.event.repository.homepage}}
+    needs:
+      - test
     permissions:
         packages: write
     env:
