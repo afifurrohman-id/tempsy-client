@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/afifurrohman-id/files-sync-client/cmd/client"
-	"github.com/afifurrohman-id/files-sync-client/cmd/client/middleware"
-	"github.com/afifurrohman-id/files-sync-client/internal"
+	"github.com/afifurrohman-id/tempsy-client/cmd/client"
+	"github.com/afifurrohman-id/tempsy-client/cmd/client/middleware"
+	"github.com/afifurrohman-id/tempsy-client/internal"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
