@@ -59,5 +59,5 @@ go build -o tempsy-client main.go
 - Build Image
 
 ```sh
-docker build -f build/Dockerfile -t tempsy .
+docker build -f build/package/Dockerfile -t tempsy .
 ```
