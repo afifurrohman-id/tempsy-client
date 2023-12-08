@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/afifurrohman-id/tempsy-client/cmd/client"
 	"github.com/afifurrohman-id/tempsy-client/cmd/client/middleware"
-	"github.com/afifurrohman-id/tempsy-client/internal"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -19,7 +18,9 @@ import (
 
 func init() {
 	if os.Getenv("APP_ENV") != "production" {
-		internal.Check(godotenv.Load(path.Join("configs", ".env")))
+		if err := godotenv.Load(path.Join("configs", ".env")); err != nil {
+			log.Error(err)
+		}
 	}
 }
 
