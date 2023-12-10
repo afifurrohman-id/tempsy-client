@@ -1,4 +1,4 @@
-name: Deploy App
+name: CI & CD Production Environment
 
 on:
   push:
@@ -15,7 +15,6 @@ jobs:
           dockerfile: build/package/Dockerfile
 
   deploy:
-    name: Deploy to Production
     runs-on: ubuntu-latest
     environment:
       name: production
