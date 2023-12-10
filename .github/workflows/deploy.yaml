@@ -68,7 +68,6 @@ jobs:
           **This test include:**
             - [x] Tidy
             - [x] Formatting
-            - [x] Unit Test
 
           ## Site Deployed to: ${{github.event.repository.homepage}}
 
