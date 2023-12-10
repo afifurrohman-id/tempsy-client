@@ -4,7 +4,6 @@ on: [deployment_status]
 
 jobs:
   lighthouse:
-    name: Test using Lighthouse
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
 
