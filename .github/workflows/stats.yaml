@@ -8,7 +8,6 @@ jobs:
     if: github.event.deployment_status.state == 'success'
 
     steps:
-      - uses: actions/checkout@v4
 
       - name: Audit Deployed App using lighthouse
         uses: treosh/lighthouse-ci-action@v10
