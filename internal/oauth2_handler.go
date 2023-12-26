@@ -2,14 +2,14 @@ package internal
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"strings"
 )
 
 // RedirectUrl returns the url for redirecting to consent screen, if the configuration is not valid, it will return empty string
 func (gO2Conf *GOAuth2Config) RedirectUrl() string {
-
 	switch {
 	case gO2Conf.CallbackURL == "":
 		return ""
@@ -37,13 +37,13 @@ func (gO2Conf *GOAuth2Config) ExchangeCode(code string) (*GOAuth2Token, error) {
 
 	if statusCode != fiber.StatusOK {
 		log.Errorf("exchange_code_error_not_ok_status_code_%d_body_%s", statusCode, body)
-		return nil, GOAuth2Error
+		return nil, ErrorGOAuth2
 	}
 
 	return oToken, nil
 }
-func (gO2Conf *GOAuth2Config) AccessToken(refreshToken string) (*GOAuth2Token, error) {
 
+func (gO2Conf *GOAuth2Config) AccessToken(refreshToken string) (*GOAuth2Token, error) {
 	payloadFormUri := fmt.Sprintf("client_secret=%s&grant_type=refresh_token&refresh_token=%s&client_id=%s", gO2Conf.ClientSecret, refreshToken, gO2Conf.ClientID)
 
 	agent := fiber.Post("https://oauth2.googleapis.com/token")
@@ -59,7 +59,7 @@ func (gO2Conf *GOAuth2Config) AccessToken(refreshToken string) (*GOAuth2Token, e
 
 	if statusCode != fiber.StatusOK {
 		log.Errorf("access_token_error_not_ok_status_code_%d_body_%s", statusCode, body)
-		return nil, GOAuth2Error
+		return nil, ErrorGOAuth2
 	}
 
 	return oToken, nil
@@ -81,7 +81,7 @@ func (gO2Conf *GOAuth2Config) RevokeAccessToken(accessToken string) error {
 
 	if statusCode != fiber.StatusOK {
 		log.Errorf("revoke_access_token_error_not_ok_status_code_%d_body_%s", statusCode, body)
-		return GOAuth2Error
+		return ErrorGOAuth2
 	}
 
 	return nil

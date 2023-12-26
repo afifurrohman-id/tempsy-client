@@ -3,12 +3,13 @@ package client
 import (
 	"errors"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/afifurrohman-id/tempsy-client/internal"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"golang.org/x/sync/errgroup"
-	"os"
-	"time"
 )
 
 // Six months in seconds
@@ -22,7 +23,7 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 
 	tokens, err := oAuth2.ExchangeCode(code)
 	if err != nil {
-		if errors.Is(err, internal.GOAuth2Error) {
+		if errors.Is(err, internal.ErrorGOAuth2) {
 			return ctx.Redirect("/auth/login")
 		}
 		log.Panic(err)
@@ -102,7 +103,6 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		}
 
 		if statusCode != fiber.StatusOK {
-
 			return ctx.Render("pages/error", map[string]string{
 				"title":   fmt.Sprintf("Error - %d", statusCode),
 				"message": string(body),
@@ -126,7 +126,7 @@ func AuthLogout(ctx *fiber.Ctx) error {
 
 	tokens, err := oAuth2.AccessToken(token)
 	if err != nil {
-		if !errors.Is(err, internal.GOAuth2Error) {
+		if !errors.Is(err, internal.ErrorGOAuth2) {
 			log.Panic(err)
 		}
 	} else {

@@ -8,8 +8,8 @@ type OAuth2Token struct {
 
 type User struct {
 	UserName   string `json:"username"`
-	TotalFiles int    `json:"totalFiles"`
 	Picture    string `json:"picture"`
+	TotalFiles int    `json:"totalFiles"`
 }
 
 type GoogleAccountInfo struct {
@@ -21,14 +21,14 @@ type GoogleAccountInfo struct {
 
 type DataFile struct {
 	Name              string `json:"name"`
-	AutoDeletedAt     int64  `json:"autoDeletedAt"`     // milliseconds
-	PrivateUrlExpires int    `json:"privateUrlExpires"` // seconds
-	IsPublic          bool   `json:"isPublic"`
-	UploadedAt        int64  `json:"uploadedAt"` // milliseconds
-	UpdatedAt         int64  `json:"updatedAt"`  // milliseconds
 	Url               string `json:"url"`
-	Size              int64  `json:"size"` // byte count
 	ContentType       string `json:"type"`
+	AutoDeletedAt     int64  `json:"autoDeletedAt"`
+	PrivateUrlExpires int    `json:"privateUrlExpires"`
+	UploadedAt        int64  `json:"uploadedAt"`
+	UpdatedAt         int64  `json:"updatedAt"`
+	Size              int64  `json:"size"`
+	IsPublic          bool   `json:"isPublic"`
 }
 
 type GuestToken struct {
@@ -38,11 +38,11 @@ type GuestToken struct {
 
 type GOAuth2Token struct {
 	AccessToken  string `json:"access_token"`
-	ExpiresIn    int    `json:"expires_in"` // in seconds
 	TokenType    string `json:"token_type"`
-	Scopes       string `json:"scope"` // separated by space
+	Scopes       string `json:"scope"`
 	IdToken      string `json:"id_token"`
 	RefreshToken string `json:"refresh_token"`
+	ExpiresIn    int    `json:"expires_in"`
 }
 
 type GOAuth2Config struct {

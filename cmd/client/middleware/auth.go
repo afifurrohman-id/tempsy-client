@@ -3,12 +3,13 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"github.com/afifurrohman-id/tempsy-client/internal"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/afifurrohman-id/tempsy-client/internal"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 func CheckAuth(ctx *fiber.Ctx) error {
@@ -20,10 +21,10 @@ func CheckAuth(ctx *fiber.Ctx) error {
 
 	tokens, err := o2.AccessToken(token)
 
-	//TODO:Validate if user is authorized
+	// TODO:Validate if user is authorized
 	if err != nil {
 		// try to get guest user
-		if errors.Is(err, internal.GOAuth2Error) {
+		if errors.Is(err, internal.ErrorGOAuth2) {
 			agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URI")))
 			agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+token)
 			apiRes := new(internal.User)
@@ -58,11 +59,11 @@ func CheckAuth(ctx *fiber.Ctx) error {
 
 		user = userInfo.User
 
-		//change to access token
+		// change to access token
 		token = tokens.AccessToken
 	}
 	ctx.Locals("user", user)
-	ctx.Locals("token", token) //access token
+	ctx.Locals("token", token) // access token
 	if ctx.Path() != "/" && user.UserName != ctx.Params("username") {
 		return ctx.Redirect("/dashboard/" + user.UserName)
 	}

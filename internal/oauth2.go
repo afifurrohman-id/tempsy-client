@@ -3,14 +3,15 @@ package internal
 import (
 	"encoding/json"
 	"errors"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
-var GOAuth2Error = errors.New("oauth2_error_response_code_not_ok")
+var ErrorGOAuth2 = errors.New("oauth2_error_response_code_not_ok")
 
 func New() (*GOAuth2Config, error) {
 	oConfJSON := os.Getenv("GOOGLE_OAUTH2_CONFIG")
@@ -43,7 +44,7 @@ func GetGoogleAccountInfo(accessToken string) (*GoogleAccountInfo, error) {
 
 	if statusCode != fiber.StatusOK {
 		log.Errorf("response_from_%d_body_%s", statusCode, string(body))
-		return nil, GOAuth2Error
+		return nil, ErrorGOAuth2
 	}
 
 	userinfo.UserName = strings.ReplaceAll(strings.Join(strings.SplitN(userinfo.Email, "@", 2), "-"), ".", "-")
