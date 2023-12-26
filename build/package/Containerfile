@@ -6,24 +6,21 @@ COPY . .
 
 ENV CGO_ENABLED=0
 
-# Install CA certificates and update them
+# Need install ca-certificates for tls compatibility for go library
 RUN apk update && \
-    apk add --no-cache ca-certificates=20230506-r0 && \
-    update-ca-certificates
+  apk add --no-cache ca-certificates=20230506-r0 && \
+  update-ca-certificates
 
 # Reduce binary size by removing debug information
 RUN go fmt ./... && \
-    go mod tidy && \
-    go build -ldflags '-w -s' -o tempsy-client main.go
+  go mod tidy && \
+  go build -ldflags "-w -s" -o tempsy-client main.go
 
 FROM scratch
 WORKDIR /app
 
 COPY --from=builder /src/tempsy-client .
-# Copy the web template
 COPY --from=builder /src/web ./web
-
-# Copy CA certificates
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 CMD [ "./tempsy-client" ]
