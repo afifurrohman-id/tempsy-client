@@ -6,11 +6,12 @@
 
 ## Requirements
 
-- [x] Git Bash for Windows (version >= 2.41.0)
-  > only need if you're using windows OS
+- [x] WSL2 (Windows Subsystem for Linux)
+  > Only need if you use Windows OS
+- [x] Git (version >= 2.43.x)
+- [x] Go (version >= 1.21.x)
 - [ ] Docker (version >= 24.0.x)
   > optional, only if you want to build image)
-- [x] Go (version >= 1.21.x)
 
 ## Installation
 
