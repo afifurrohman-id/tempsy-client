@@ -64,7 +64,7 @@ jobs:
       - name: Job Successful Feedback
         if: ${{success()}}
         run: |
-          cat >> ${GITHUB_STEP_SUMMARY} <<MD
+          cat >> $GITHUB_STEP_SUMMARY <<MD
           # Success Deploy (Production)
 
           **This test include:**
