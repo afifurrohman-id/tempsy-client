@@ -1,18 +1,20 @@
 package main
 
 import (
+	"os"
+	"path"
+	"time"
+
 	"github.com/afifurrohman-id/tempsy-client/cmd/client"
 	"github.com/afifurrohman-id/tempsy-client/cmd/client/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
-	"os"
-	"path"
-	"time"
 )
 
 func init() {
@@ -34,7 +36,7 @@ func main() {
 
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestSpeed,
-	}), recover.New(), logger.New(), middleware.Limiter)
+	}), recover.New(), logger.New(), favicon.New(), middleware.Limiter)
 
 	cacheDuration := 10 * time.Second
 	if os.Getenv("APP_ENV") != "production" {
