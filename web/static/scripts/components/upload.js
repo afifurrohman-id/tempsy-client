@@ -1,6 +1,7 @@
 const MAX_FILE_NAME_LENGTH = 80
 
 function doUpload(file, handler) {
+    if (!file) return
 
     const fileInfo = document.getElementById('file-info')
     fileInfo.innerHTML = `

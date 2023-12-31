@@ -6,7 +6,7 @@ setupUserNav()
 
 const deleteBtn = document.getElementById('delete-btn')
 
-deleteBtn.addEventListener('click', async () => {
+deleteBtn && deleteBtn.addEventListener('click', async () => {
     if (confirm('Are you sure?, this action cannot be undone')) {
 
             const res = await fetch(location.href, {
