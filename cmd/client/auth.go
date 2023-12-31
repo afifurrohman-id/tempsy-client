@@ -9,19 +9,16 @@ import (
 	"github.com/afifurrohman-id/tempsy-client/internal"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"golang.org/x/sync/errgroup"
 )
 
 // Six months in seconds
 const maxAgeCookie = 6 * 30 * 24 * 60 * 60
 
 func OAuth2Callback(ctx *fiber.Ctx) error {
-	code := ctx.Query("code")
-
 	oAuth2, err := internal.New()
 	internal.Check(err)
 
-	tokens, err := oAuth2.ExchangeCode(code)
+	tokens, err := oAuth2.ExchangeCode(ctx.Query("code"))
 	if err != nil {
 		if errors.Is(err, internal.ErrorGOAuth2) {
 			return ctx.Redirect("/auth/login")
@@ -53,8 +50,7 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 	return ctx.Redirect(fmt.Sprintf("/dashboard/%s", user.UserName))
 }
 
-// AuthLogin
-// TODO: More validation
+// AuthLogin  TODO: More validation
 func AuthLogin(ctx *fiber.Ctx) error {
 	if ctx.Query("type", "oauth2") == "guest" {
 		agent := fiber.Get(os.Getenv("API_SERVER_URI") + "/auth/guest/token")
@@ -62,7 +58,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		apiRes := new(internal.GuestToken)
 		statusCode, body, errs := agent.Struct(&apiRes)
 		if len(errs) > 0 {
-			log.Panic()
+			log.Panic(errs[0])
 		}
 
 		if statusCode != fiber.StatusOK {
@@ -119,24 +115,16 @@ func AuthLogin(ctx *fiber.Ctx) error {
 }
 
 func AuthLogout(ctx *fiber.Ctx) error {
-	token := ctx.Cookies("token") // refresh token if oauth2 or access token if guest
-
 	oAuth2, err := internal.New()
 	internal.Check(err)
 
-	tokens, err := oAuth2.AccessToken(token)
+	tokens, err := oAuth2.AccessToken(ctx.Cookies("token")) // refresh token if oauth2 or access token if guest
 	if err != nil {
 		if !errors.Is(err, internal.ErrorGOAuth2) {
 			log.Panic(err)
 		}
 	} else {
-		errorGroup := new(errgroup.Group)
-
-		errorGroup.Go(func() error {
-			return oAuth2.RevokeAccessToken(tokens.AccessToken)
-		})
-
-		if err = errorGroup.Wait(); err != nil {
+		if err = oAuth2.RevokeAccessToken(tokens.AccessToken); err != nil {
 			log.Error(err)
 		}
 	}

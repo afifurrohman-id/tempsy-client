@@ -18,8 +18,7 @@ func New() (*GOAuth2Config, error) {
 
 	oConf := new(GOAuth2Config)
 
-	err := json.Unmarshal([]byte(oConfJSON), &oConf)
-	if err != nil {
+	if err := json.Unmarshal([]byte(oConfJSON), &oConf); err != nil {
 		return nil, err
 	}
 

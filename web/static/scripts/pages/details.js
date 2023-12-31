@@ -1,6 +1,6 @@
-import {setupTheme} from "../utils/theme.js";
-import {setupUserNav} from "../components/user-nav.js";
-import {doFile} from "../components/upload.js";
+import {setupTheme} from '../utils/theme.js'
+import {setupUserNav} from '../components/user-nav.js'
+import {doFile} from '../components/upload.js'
 
 setupTheme()
 setupUserNav()

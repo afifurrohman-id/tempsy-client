@@ -3,13 +3,14 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/afifurrohman-id/tempsy-client/internal"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/afifurrohman-id/tempsy-client/internal"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 func HandleWelcomeClient(ctx *fiber.Ctx) error {
@@ -98,9 +99,7 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 	apiRes := new(internal.DataFile)
 	statusCode, body, errs := agent.Struct(&apiRes)
 	if len(errs) > 0 {
-		for _, err := range errs {
-			internal.Check(err)
-		}
+		internal.Check(errs[0])
 	}
 
 	if statusCode != fiber.StatusOK {

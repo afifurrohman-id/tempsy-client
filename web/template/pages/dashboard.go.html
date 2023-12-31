@@ -21,7 +21,7 @@
 {{ template "components/upload" .}}
 
     <main>
-        {{$length := len .files}}{{ if eq $length 0 }}
+        {{ if eq len .files 0 }}
             <h1>No Files here, Add one</h1>
             {{ else }}
                 <ul>

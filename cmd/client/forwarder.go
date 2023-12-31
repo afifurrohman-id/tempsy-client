@@ -3,10 +3,11 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+
 	"github.com/afifurrohman-id/tempsy-client/internal"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"os"
 )
 
 func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
@@ -70,9 +71,7 @@ func HandleDeleteDataClient(ctx *fiber.Ctx) error {
 
 	statusCode, body, errs := agent.Bytes()
 	if len(errs) > 0 {
-		for _, err := range errs {
-			internal.Check(err)
-		}
+		internal.Check(errs[0])
 	}
 
 	if statusCode != fiber.StatusNoContent {
@@ -91,9 +90,7 @@ func HandleDeleteAllDataClient(ctx *fiber.Ctx) error {
 
 	statusCode, body, errs := agent.Bytes()
 	if len(errs) > 0 {
-		for _, err := range errs {
-			internal.Check(err)
-		}
+		internal.Check(errs[0])
 	}
 
 	if statusCode != fiber.StatusNoContent {

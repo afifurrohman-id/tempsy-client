@@ -3,12 +3,12 @@ package middleware
 import (
 	"errors"
 	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
 
 func CatchServerError(ctx *fiber.Ctx, err error) error {
-
 	fiberError := new(fiber.Error)
 	if errors.As(err, &fiberError) {
 		log.Error("Fiber Error - ", fiberError)

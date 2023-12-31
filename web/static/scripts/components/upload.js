@@ -18,11 +18,11 @@ function doUpload(file, handler) {
                     </label>
                     <button type="submit" class="btn-upload">Upload</button>
                     `
-let metadata = {
-        autoDeletedAt: Date.now(),
-        isPublic: false,
-        xPrivateUrlExpires: 10 // 10 seconds
-}
+    let metadata = {
+            autoDeletedAt: Date.now(),
+            isPublic: false,
+            xPrivateUrlExpires: 10 // 10 seconds
+    }
 
     document.querySelector('#file-info input[type="datetime-local"]').addEventListener('input', ({currentTarget}) => {
         metadata = {

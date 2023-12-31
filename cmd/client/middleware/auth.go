@@ -13,9 +13,11 @@ import (
 )
 
 func CheckAuth(ctx *fiber.Ctx) error {
-	user := new(internal.User)
-	token := ctx.Cookies("token") // refresh token if oauth2 or access token if guest
-
+	var (
+		path  = ctx.Path()
+		user  = new(internal.User)
+		token = ctx.Cookies("token") // refresh token if oauth2 or access token if guest
+	)
 	o2, err := internal.New()
 	internal.Check(err)
 
@@ -36,7 +38,7 @@ func CheckAuth(ctx *fiber.Ctx) error {
 			}
 
 			if statusCode != fiber.StatusOK || !strings.HasPrefix(apiRes.UserName, internal.GuestUsernamePrefix) {
-				if ctx.Path() == "/" {
+				if path == "/" {
 					return ctx.Next()
 				}
 				return ctx.Redirect("/auth/login")
@@ -51,7 +53,7 @@ func CheckAuth(ctx *fiber.Ctx) error {
 		internal.Check(err)
 
 		if !userInfo.VerifiedEmail {
-			if ctx.Path() == "/" {
+			if path == "/" {
 				return ctx.Next()
 			}
 			return ctx.Redirect("/auth/login")
@@ -64,12 +66,13 @@ func CheckAuth(ctx *fiber.Ctx) error {
 	}
 	ctx.Locals("user", user)
 	ctx.Locals("token", token) // access token
-	if ctx.Path() != "/" && user.UserName != ctx.Params("username") {
+	if path != "/" && user.UserName != ctx.Params("username") {
 		return ctx.Redirect("/dashboard/" + user.UserName)
 	}
 	return ctx.Next()
 }
 
+// SetRealIpClient TODO: It's Really work?
 func SetRealIpClient(ctx *fiber.Ctx) error {
 	ctx.Request().Header.Set(internal.HeaderRealIp, ctx.IP())
 	return ctx.Next()

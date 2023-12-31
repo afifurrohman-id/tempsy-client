@@ -1,7 +1,3 @@
-/**
- * @description Setup theme mode
- * @returns {string}
- */
 export function setupTheme() {
     const btnThemeChanger = document.getElementById('btn-theme-changer')
 
