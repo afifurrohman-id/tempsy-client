@@ -53,7 +53,7 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 // AuthLogin  TODO: More validation
 func AuthLogin(ctx *fiber.Ctx) error {
 	if ctx.Query("type", "oauth2") == "guest" {
-		agent := fiber.Get(os.Getenv("API_SERVER_URI") + "/auth/guest/token")
+		agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/guest/token")
 
 		apiRes := new(internal.GuestToken)
 		statusCode, body, errs := agent.Struct(&apiRes)
@@ -89,7 +89,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			HTTPOnly: os.Getenv("APP_ENV") == "production",
 		})
 
-		agent = fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URI")))
+		agent = fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
 		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
 
 		apiResUser := new(internal.User)

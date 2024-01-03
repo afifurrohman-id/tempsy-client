@@ -25,7 +25,7 @@ func HandleDashboardClient(ctx *fiber.Ctx) error {
 		log.Panic("invalid_user_struct")
 	}
 
-	agent := fiber.Get(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URI"), ctx.Params("username")))
+	agent := fiber.Get(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	apiRes := new([]*internal.DataFile)
@@ -61,7 +61,7 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 	lastLoginMs, err := strconv.ParseInt(ctx.Cookies("last_login", fmt.Sprintf("%d", time.Now().UnixMilli())), 10, 64)
 	internal.Check(err)
 
-	agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URI")))
+	agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	apiRes := new(internal.User)
@@ -93,7 +93,7 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 		log.Panic("invalid_user_struct")
 	}
 
-	agent := fiber.Get(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URI"), user.UserName, ctx.Params("name")))
+	agent := fiber.Get(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), user.UserName, ctx.Params("name")))
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	apiRes := new(internal.DataFile)

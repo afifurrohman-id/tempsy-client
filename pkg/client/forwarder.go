@@ -11,7 +11,7 @@ import (
 )
 
 func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
-	agent := fiber.Post(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URI"), ctx.Params("username")))
+	agent := fiber.Post(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
 
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 	agent.Body(ctx.Body())
@@ -39,7 +39,7 @@ func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
 }
 
 func HandleUpdateDataClient(ctx *fiber.Ctx) error {
-	agent := fiber.Put(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URI"), ctx.Params("username"), ctx.Params("name")))
+	agent := fiber.Put(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username"), ctx.Params("name")))
 
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 	agent.Body(ctx.Body())
@@ -65,7 +65,7 @@ func HandleUpdateDataClient(ctx *fiber.Ctx) error {
 }
 
 func HandleDeleteDataClient(ctx *fiber.Ctx) error {
-	agent := fiber.Delete(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URI"), ctx.Params("username"), ctx.Params("name")))
+	agent := fiber.Delete(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username"), ctx.Params("name")))
 
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
@@ -85,7 +85,7 @@ func HandleDeleteDataClient(ctx *fiber.Ctx) error {
 }
 
 func HandleDeleteAllDataClient(ctx *fiber.Ctx) error {
-	agent := fiber.Delete(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URI"), ctx.Params("username")))
+	agent := fiber.Delete(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	statusCode, body, errs := agent.Bytes()

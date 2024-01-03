@@ -27,7 +27,7 @@ func CheckAuth(ctx *fiber.Ctx) error {
 	if err != nil {
 		// try to get guest user
 		if errors.Is(err, internal.ErrorGOAuth2) {
-			agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URI")))
+			agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
 			agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+token)
 			apiRes := new(internal.User)
 
