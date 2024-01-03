@@ -5,8 +5,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/afifurrohman-id/tempsy-client/cmd/client"
-	"github.com/afifurrohman-id/tempsy-client/cmd/client/middleware"
+	"github.com/afifurrohman-id/tempsy-client/pkg/client"
+	"github.com/afifurrohman-id/tempsy-client/pkg/client/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"

@@ -16,9 +16,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: ${{github.event.repository.homepage}}
     needs:
       - test
     permissions:
@@ -61,16 +58,3 @@ jobs:
           imageToDeploy: ${{env.IMAGE_NAME}}:${{github.sha}}
           targetPort: ${{secrets.PORT}}
 
-      - name: Job Successful Feedback
-        if: ${{success()}}
-        run: |
-          cat >> $GITHUB_STEP_SUMMARY <<MD
-          # Success Deploy (Production)
-
-          **This test include:**
-            - [x] Tidy
-            - [x] Formatting
-
-          ## Site Deployed to: ${{github.event.repository.homepage}}
-
-          MD

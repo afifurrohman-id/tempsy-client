@@ -53,13 +53,13 @@ go mod tidy
 - Run the app
 
 ```sh
-go run main.go
+go run cmd/client/main.go
 ```
 
 - Build
 
 ```sh
-go build -o tempsy-client main.go
+go build -o tempsy-client cmd/client/main.go
 ```
 
 - Build Image
