@@ -28,11 +28,10 @@ func init() {
 func main() {
 	engine := html.New(path.Join("web", "template"), ".go.html")
 	app := fiber.New(fiber.Config{
-		Views:              engine,
-		BodyLimit:          30 << 20, // 30MB
-		CaseSensitive:      true,
-		ErrorHandler:       middleware.CatchServerError,
-		EnableIPValidation: true,
+		Views:         engine,
+		BodyLimit:     30 << 20, // 30MB
+		CaseSensitive: true,
+		ErrorHandler:  middleware.CatchServerError,
 	})
 
 	app.Use(compress.New(compress.Config{

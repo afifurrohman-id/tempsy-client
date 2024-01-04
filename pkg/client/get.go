@@ -26,6 +26,8 @@ func HandleDashboardClient(ctx *fiber.Ctx) error {
 	}
 
 	agent := fiber.Get(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
+
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	apiRes := new([]*internal.DataFile)
@@ -62,6 +64,8 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 	internal.Check(err)
 
 	agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
+
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	apiRes := new(internal.User)
@@ -94,6 +98,8 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 	}
 
 	agent := fiber.Get(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), user.UserName, ctx.Params("name")))
+
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	apiRes := new(internal.DataFile)

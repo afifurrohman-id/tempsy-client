@@ -13,9 +13,9 @@ import (
 func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
 	agent := fiber.Post(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
 
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 	agent.Body(ctx.Body())
-
 	agent.Set(fiber.HeaderContentType, ctx.Get(fiber.HeaderContentType))
 	agent.Set(internal.HeaderIsPublic, ctx.Get(internal.HeaderIsPublic))
 	agent.Set(internal.HeaderPrivateUrlExpires, ctx.Get(internal.HeaderPrivateUrlExpires))
@@ -41,6 +41,7 @@ func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
 func HandleUpdateDataClient(ctx *fiber.Ctx) error {
 	agent := fiber.Put(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username"), ctx.Params("name")))
 
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 	agent.Body(ctx.Body())
 	agent.Set(fiber.HeaderContentType, ctx.Get(fiber.HeaderContentType))
@@ -67,6 +68,7 @@ func HandleUpdateDataClient(ctx *fiber.Ctx) error {
 func HandleDeleteDataClient(ctx *fiber.Ctx) error {
 	agent := fiber.Delete(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username"), ctx.Params("name")))
 
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	statusCode, body, errs := agent.Bytes()
@@ -86,6 +88,8 @@ func HandleDeleteDataClient(ctx *fiber.Ctx) error {
 
 func HandleDeleteAllDataClient(ctx *fiber.Ctx) error {
 	agent := fiber.Delete(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
+
+	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
 
 	statusCode, body, errs := agent.Bytes()

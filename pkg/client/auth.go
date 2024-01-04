@@ -55,6 +55,8 @@ func AuthLogin(ctx *fiber.Ctx) error {
 	if ctx.Query("type", "oauth2") == "guest" {
 		agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/guest/token")
 
+		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
+
 		apiRes := new(internal.GuestToken)
 		statusCode, body, errs := agent.Struct(&apiRes)
 		if len(errs) > 0 {
@@ -90,6 +92,8 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		})
 
 		agent = fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
+
+		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
 
 		apiResUser := new(internal.User)
