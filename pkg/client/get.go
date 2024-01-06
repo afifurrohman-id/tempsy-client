@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/afifurrohman-id/tempsy-client/internal"
@@ -86,7 +85,7 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 
 	return ctx.Render("pages/profile", map[string]any{
 		"user":      user,
-		"lastLogin": strings.Split(strings.SplitN(time.UnixMilli(lastLoginMs).Local().String(), "+", 2)[0], ".")[0],
+		"lastLogin": internal.FormatDate(lastLoginMs),
 		"total":     apiRes.TotalFiles,
 	})
 }
@@ -122,16 +121,14 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 		"user": user,
 		"file": struct {
 			*internal.DataFile
-			UploadedAt        string
-			UpdatedAt         string
-			AutoDeletedAt     string
-			PrivateUrlExpires string
+			UploadedAt    string
+			UpdatedAt     string
+			AutoDeletedAt string
 		}{
-			DataFile:          apiRes,
-			UploadedAt:        internal.FormatDate(apiRes.UploadedAt),
-			UpdatedAt:         internal.FormatDate(apiRes.UpdatedAt),
-			AutoDeletedAt:     internal.FormatDate(apiRes.AutoDeletedAt),
-			PrivateUrlExpires: internal.FormatDate(time.Now().Add(time.Duration(apiRes.PrivateUrlExpires) * time.Second).UnixMilli()),
+			DataFile:      apiRes,
+			UploadedAt:    internal.FormatDate(apiRes.UploadedAt),
+			UpdatedAt:     internal.FormatDate(apiRes.UpdatedAt),
+			AutoDeletedAt: internal.FormatDate(apiRes.AutoDeletedAt),
 		},
 		"type": "Update",
 	})

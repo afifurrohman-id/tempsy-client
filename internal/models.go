@@ -24,7 +24,7 @@ type DataFile struct {
 	Url               string `json:"url"`
 	ContentType       string `json:"type"`
 	AutoDeletedAt     int64  `json:"autoDeletedAt"`
-	PrivateUrlExpires int    `json:"privateUrlExpires"`
+	PrivateUrlExpires uint   `json:"privateUrlExpires"`
 	UploadedAt        int64  `json:"uploadedAt"`
 	UpdatedAt         int64  `json:"updatedAt"`
 	Size              int64  `json:"size"`
