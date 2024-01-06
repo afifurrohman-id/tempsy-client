@@ -41,7 +41,7 @@ func HandleDashboardClient(ctx *fiber.Ctx) error {
 		internal.Check(json.Unmarshal(body, &apiErr))
 
 		return ctx.Render("pages/error", map[string]any{
-			"title":   fmt.Sprintf("Error - %d", statusCode),
+			"code":    statusCode,
 			"message": apiErr.Description,
 		})
 	}
@@ -78,7 +78,7 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 		internal.Check(json.Unmarshal(body, &apiErr))
 
 		return ctx.Render("pages/error", map[string]any{
-			"title":   fmt.Sprintf("Error - %d", statusCode),
+			"code":    statusCode,
 			"message": apiErr.Description,
 		})
 	}
@@ -112,7 +112,7 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 		internal.Check(json.Unmarshal(body, &apiErr))
 
 		return ctx.Render("pages/error", map[string]any{
-			"title":   fmt.Sprintf("Error - %d", statusCode),
+			"code":    statusCode,
 			"message": apiErr.Description,
 		})
 	}

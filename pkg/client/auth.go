@@ -67,8 +67,8 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			if statusCode == fiber.StatusBadRequest {
 				return ctx.Redirect("/")
 			}
-			return ctx.Render("pages/error", map[string]string{
-				"title":   fmt.Sprintf("Error - %d", statusCode),
+			return ctx.Render("pages/error", map[string]any{
+				"code":    statusCode,
 				"message": string(body),
 			})
 		}
@@ -103,8 +103,8 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		}
 
 		if statusCode != fiber.StatusOK {
-			return ctx.Render("pages/error", map[string]string{
-				"title":   fmt.Sprintf("Error - %d", statusCode),
+			return ctx.Render("pages/error", map[string]any{
+				"code":    statusCode,
 				"message": string(body),
 			})
 		}
