@@ -10,7 +10,7 @@ function doUpload(file, handler) {
                             Automatic Deleted At: <input type="datetime-local">
                      </label>
                      <label>
-                         Private Url Expires (Seconds): <input type="number" max="604801">
+                         Private Url Expires (Seconds): <input type="number" max="604800" min="2" >
                     </label>
                      <p>File size: <code>${file.size} bytes</code></p>
                      <label>
