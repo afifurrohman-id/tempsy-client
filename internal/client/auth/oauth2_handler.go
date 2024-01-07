@@ -67,7 +67,7 @@ func (gO2Conf *GOAuth2Config) AccessToken(refreshToken string) (*models.GOAuth2T
 }
 
 func (gO2Conf *GOAuth2Config) RevokeAccessToken(accessToken string) error {
-	payloadFormUri := fmt.Sprintf("token=%s", accessToken)
+	payloadFormUri := "token=" + accessToken
 
 	agent := fiber.Post("https://oauth2.googleapis.com/revoke")
 
