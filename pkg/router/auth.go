@@ -49,7 +49,7 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 		HTTPOnly: os.Getenv("APP_ENV") == "production",
 	})
 
-	return ctx.Redirect(fmt.Sprintf("/dashboard/%s", user.UserName))
+	return ctx.Redirect("/dashboard/" + user.UserName)
 }
 
 // AuthLogin  TODO: More validation
@@ -93,7 +93,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			HTTPOnly: os.Getenv("APP_ENV") == "production",
 		})
 
-		agent = fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
+		agent = fiber.Get(os.Getenv("API_SERVER_URL"), "/auth/userinfo/me")
 
 		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
@@ -111,7 +111,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			})
 		}
 
-		return ctx.Redirect(fmt.Sprintf("/dashboard/%s", apiResUser.UserName))
+		return ctx.Redirect("/dashboard/" + apiResUser.UserName)
 	}
 
 	oAuth2, err := auth.New()
