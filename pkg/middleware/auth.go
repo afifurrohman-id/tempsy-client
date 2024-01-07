@@ -29,7 +29,7 @@ func CheckAuth(ctx *fiber.Ctx) error {
 	if err != nil {
 		// try to get guest user
 		if errors.Is(err, auth.ErrorGOAuth2) {
-			agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
+			agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/userinfo/me")
 
 			agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 			agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+token)
