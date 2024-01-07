@@ -63,7 +63,7 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 	lastLoginMs, err := strconv.ParseInt(ctx.Cookies("last_login", fmt.Sprintf("%d", time.Now().UnixMilli())), 10, 64)
 	utils.Check(err)
 
-	agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
+	agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/userinfo/me")
 
 	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+ctx.Locals("token").(string))
