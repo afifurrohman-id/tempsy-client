@@ -93,7 +93,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			HTTPOnly: os.Getenv("APP_ENV") == "production",
 		})
 
-		agent = fiber.Get(os.Getenv("API_SERVER_URL"), "/auth/userinfo/me")
+		agent = fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/userinfo/me")
 
 		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
