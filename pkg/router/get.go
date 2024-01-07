@@ -1,4 +1,4 @@
-package client
+package router
 
 import (
 	"encoding/json"
@@ -7,7 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/afifurrohman-id/tempsy-client/internal"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -19,7 +20,7 @@ func HandleWelcomeClient(ctx *fiber.Ctx) error {
 }
 
 func HandleDashboardClient(ctx *fiber.Ctx) error {
-	user, ok := ctx.Locals("user").(*internal.User)
+	user, ok := ctx.Locals("user").(*models.User)
 	if !ok {
 		log.Panic("invalid_user_struct")
 	}
@@ -27,18 +28,18 @@ func HandleDashboardClient(ctx *fiber.Ctx) error {
 	agent := fiber.Get(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
 
 	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
+	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+ctx.Locals("token").(string))
 
-	apiRes := new([]*internal.DataFile)
+	apiRes := new([]*models.DataFile)
 
 	statusCode, body, errs := agent.Struct(&apiRes)
 	if len(errs) > 0 {
-		internal.Check(errs[0])
+		utils.Check(errs[0])
 	}
 
 	if statusCode != fiber.StatusOK {
-		apiErr := new(internal.ApiError)
-		internal.Check(json.Unmarshal(body, &apiErr))
+		apiErr := new(models.ApiError)
+		utils.Check(json.Unmarshal(body, &apiErr))
 
 		return ctx.Render("pages/error", map[string]any{
 			"code":    statusCode,
@@ -54,28 +55,28 @@ func HandleDashboardClient(ctx *fiber.Ctx) error {
 }
 
 func HandleProfileClient(ctx *fiber.Ctx) error {
-	user, ok := ctx.Locals("user").(*internal.User)
+	user, ok := ctx.Locals("user").(*models.User)
 	if !ok {
 		log.Panic("invalid_user_struct")
 	}
 
 	lastLoginMs, err := strconv.ParseInt(ctx.Cookies("last_login", fmt.Sprintf("%d", time.Now().UnixMilli())), 10, 64)
-	internal.Check(err)
+	utils.Check(err)
 
 	agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
 
 	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
+	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+ctx.Locals("token").(string))
 
-	apiRes := new(internal.User)
+	apiRes := new(models.User)
 	statusCode, body, errs := agent.Struct(&apiRes)
 	if len(errs) > 0 {
 		log.Panic(errs[0])
 	}
 
 	if statusCode != fiber.StatusOK {
-		apiErr := new(internal.ApiError)
-		internal.Check(json.Unmarshal(body, &apiErr))
+		apiErr := new(models.ApiError)
+		utils.Check(json.Unmarshal(body, &apiErr))
 
 		return ctx.Render("pages/error", map[string]any{
 			"code":    statusCode,
@@ -85,13 +86,13 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 
 	return ctx.Render("pages/profile", map[string]any{
 		"user":      user,
-		"lastLogin": internal.FormatDate(lastLoginMs),
+		"lastLogin": utils.FormatDate(lastLoginMs),
 		"total":     apiRes.TotalFiles,
 	})
 }
 
 func HandleDetailDataClient(ctx *fiber.Ctx) error {
-	user, ok := ctx.Locals("user").(*internal.User)
+	user, ok := ctx.Locals("user").(*models.User)
 	if !ok {
 		log.Panic("invalid_user_struct")
 	}
@@ -99,17 +100,17 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 	agent := fiber.Get(fmt.Sprintf("%s/files/%s/%s", os.Getenv("API_SERVER_URL"), user.UserName, ctx.Params("name")))
 
 	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-	agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+ctx.Locals("token").(string))
+	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+ctx.Locals("token").(string))
 
-	apiRes := new(internal.DataFile)
+	apiRes := new(models.DataFile)
 	statusCode, body, errs := agent.Struct(&apiRes)
 	if len(errs) > 0 {
-		internal.Check(errs[0])
+		utils.Check(errs[0])
 	}
 
 	if statusCode != fiber.StatusOK {
-		apiErr := new(internal.ApiError)
-		internal.Check(json.Unmarshal(body, &apiErr))
+		apiErr := new(models.ApiError)
+		utils.Check(json.Unmarshal(body, &apiErr))
 
 		return ctx.Render("pages/error", map[string]any{
 			"code":    statusCode,
@@ -120,15 +121,15 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 	return ctx.Render("pages/details", map[string]any{
 		"user": user,
 		"file": struct {
-			*internal.DataFile
+			*models.DataFile
 			UploadedAt    string
 			UpdatedAt     string
 			AutoDeletedAt string
 		}{
 			DataFile:      apiRes,
-			UploadedAt:    internal.FormatDate(apiRes.UploadedAt),
-			UpdatedAt:     internal.FormatDate(apiRes.UpdatedAt),
-			AutoDeletedAt: internal.FormatDate(apiRes.AutoDeletedAt),
+			UploadedAt:    utils.FormatDate(apiRes.UploadedAt),
+			UpdatedAt:     utils.FormatDate(apiRes.UpdatedAt),
+			AutoDeletedAt: utils.FormatDate(apiRes.AutoDeletedAt),
 		},
 		"type": "Update",
 	})

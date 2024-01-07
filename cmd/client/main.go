@@ -5,8 +5,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/afifurrohman-id/tempsy-client/pkg/client"
-	"github.com/afifurrohman-id/tempsy-client/pkg/client/middleware"
+	"github.com/afifurrohman-id/tempsy-client/pkg/middleware"
+	"github.com/afifurrohman-id/tempsy-client/pkg/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -47,23 +47,23 @@ func main() {
 		CacheDuration: cacheDuration,
 	})
 
-	app.Get("/", middleware.CheckAuth, client.HandleWelcomeClient)
+	app.Get("/", middleware.CheckAuth, router.HandleWelcomeClient)
 
 	routeAuth := app.Group("/auth")
-	routeAuth.Get("/", client.OAuth2Callback)
-	routeAuth.Get("/login", client.AuthLogin)
-	routeAuth.Get("/logout", client.AuthLogout)
+	routeAuth.Get("/", router.OAuth2Callback)
+	routeAuth.Get("/login", router.AuthLogin)
+	routeAuth.Get("/logout", router.AuthLogout)
 
 	routeDashboardUser := app.Group("/dashboard/:username", middleware.CheckAuth)
-	routeDashboardUser.Get("/", client.HandleDashboardClient)
-	routeDashboardUser.Get("/profile", client.HandleProfileClient)
-	routeDashboardUser.Get("/:name", client.HandleDetailDataClient)
+	routeDashboardUser.Get("/", router.HandleDashboardClient)
+	routeDashboardUser.Get("/profile", router.HandleProfileClient)
+	routeDashboardUser.Get("/:name", router.HandleDetailDataClient)
 
 	routeDashboardUser.Use(middleware.SetRealIpClient)
-	routeDashboardUser.Post("/", client.HandleUploadDashboardClient)
-	routeDashboardUser.Put("/:name", client.HandleUpdateDataClient)
-	routeDashboardUser.Delete("/profile", client.HandleDeleteAllDataClient)
-	routeDashboardUser.Delete("/:name", client.HandleDeleteDataClient)
+	routeDashboardUser.Post("/", router.HandleUploadDashboardClient)
+	routeDashboardUser.Put("/:name", router.HandleUpdateDataClient)
+	routeDashboardUser.Delete("/profile", router.HandleDeleteAllDataClient)
+	routeDashboardUser.Delete("/:name", router.HandleDeleteDataClient)
 
 	if err := app.Listen(":" + os.Getenv("PORT")); err != nil {
 		log.Panic(err)

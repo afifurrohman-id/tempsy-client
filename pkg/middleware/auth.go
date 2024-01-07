@@ -7,7 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/afifurrohman-id/tempsy-client/internal"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/auth"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -15,31 +17,31 @@ import (
 func CheckAuth(ctx *fiber.Ctx) error {
 	var (
 		path  = ctx.Path()
-		user  = new(internal.User)
+		user  = new(models.User)
 		token = ctx.Cookies("token") // refresh token if oauth2 or access token if guest
 	)
-	o2, err := internal.New()
-	internal.Check(err)
+	o2, err := auth.New()
+	utils.Check(err)
 
 	tokens, err := o2.AccessToken(token)
 
 	// TODO:Validate if user is authorized
 	if err != nil {
 		// try to get guest user
-		if errors.Is(err, internal.ErrorGOAuth2) {
+		if errors.Is(err, auth.ErrorGOAuth2) {
 			agent := fiber.Get(fmt.Sprintf("%s/auth/userinfo/me", os.Getenv("API_SERVER_URL")))
 
 			agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-			agent.Set(fiber.HeaderAuthorization, internal.BearerPrefix+token)
+			agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+token)
 
-			apiRes := new(internal.User)
+			apiRes := new(models.User)
 			agent.Timeout(10 * time.Second)
 			statusCode, _, errs := agent.Struct(&apiRes)
 			if len(errs) > 0 {
 				log.Panic(errs[0])
 			}
 
-			if statusCode != fiber.StatusOK || !strings.HasPrefix(apiRes.UserName, internal.GuestUsernamePrefix) {
+			if statusCode != fiber.StatusOK || !strings.HasPrefix(apiRes.UserName, auth.GuestUsernamePrefix) {
 				if path == "/" {
 					return ctx.Next()
 				}
@@ -51,8 +53,8 @@ func CheckAuth(ctx *fiber.Ctx) error {
 			log.Panic(err)
 		}
 	} else {
-		userInfo, err := internal.GetGoogleAccountInfo(tokens.AccessToken)
-		internal.Check(err)
+		userInfo, err := auth.GetGoogleAccountInfo(tokens.AccessToken)
+		utils.Check(err)
 
 		if !userInfo.VerifiedEmail {
 			if path == "/" {
@@ -76,6 +78,6 @@ func CheckAuth(ctx *fiber.Ctx) error {
 
 // SetRealIpClient TODO: It's Really work?
 func SetRealIpClient(ctx *fiber.Ctx) error {
-	ctx.Request().Header.Set(internal.HeaderRealIp, ctx.IP())
+	ctx.Request().Header.Set(utils.HeaderRealIp, ctx.IP())
 	return ctx.Next()
 }

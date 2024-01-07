@@ -1,4 +1,4 @@
-package internal
+package models
 
 type OAuth2Token struct {
 	AccessToken  string `json:"access_token"`
@@ -43,13 +43,6 @@ type GOAuth2Token struct {
 	IdToken      string `json:"id_token"`
 	RefreshToken string `json:"refresh_token"`
 	ExpiresIn    int    `json:"expires_in"`
-}
-
-type GOAuth2Config struct {
-	ClientID     string   `json:"clientId"`
-	ClientSecret string   `json:"clientSecret"`
-	CallbackURL  string   `json:"callbackUrl"`
-	Scopes       []string `json:"scopes"`
 }
 
 type ApiError struct {

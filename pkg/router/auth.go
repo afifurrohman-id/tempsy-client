@@ -1,4 +1,4 @@
-package client
+package router
 
 import (
 	"errors"
@@ -6,7 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/afifurrohman-id/tempsy-client/internal"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/auth"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -15,19 +17,19 @@ import (
 const maxAgeCookie = 6 * 30 * 24 * 60 * 60
 
 func OAuth2Callback(ctx *fiber.Ctx) error {
-	oAuth2, err := internal.New()
-	internal.Check(err)
+	oAuth2, err := auth.New()
+	utils.Check(err)
 
 	tokens, err := oAuth2.ExchangeCode(ctx.Query("code"))
 	if err != nil {
-		if errors.Is(err, internal.ErrorGOAuth2) {
+		if errors.Is(err, auth.ErrorGOAuth2) {
 			return ctx.Redirect("/auth/login")
 		}
 		log.Panic(err)
 	}
 
-	user, err := internal.GetGoogleAccountInfo(tokens.AccessToken)
-	internal.Check(err)
+	user, err := auth.GetGoogleAccountInfo(tokens.AccessToken)
+	utils.Check(err)
 
 	ctx.Cookie(&fiber.Cookie{
 		Name:     "token",
@@ -57,7 +59,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 
 		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 
-		apiRes := new(internal.GuestToken)
+		apiRes := new(models.GuestToken)
 		statusCode, body, errs := agent.Struct(&apiRes)
 		if len(errs) > 0 {
 			log.Panic(errs[0])
@@ -96,7 +98,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
 
-		apiResUser := new(internal.User)
+		apiResUser := new(models.User)
 		statusCode, body, errs = agent.Struct(&apiResUser)
 		if len(errs) > 0 {
 			log.Panic(errs[0])
@@ -112,19 +114,19 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		return ctx.Redirect(fmt.Sprintf("/dashboard/%s", apiResUser.UserName))
 	}
 
-	oAuth2, err := internal.New()
-	internal.Check(err)
+	oAuth2, err := auth.New()
+	utils.Check(err)
 
 	return ctx.Redirect(oAuth2.RedirectUrl())
 }
 
 func AuthLogout(ctx *fiber.Ctx) error {
-	oAuth2, err := internal.New()
-	internal.Check(err)
+	oAuth2, err := auth.New()
+	utils.Check(err)
 
 	tokens, err := oAuth2.AccessToken(ctx.Cookies("token")) // refresh token if oauth2 or access token if guest
 	if err != nil {
-		if !errors.Is(err, internal.ErrorGOAuth2) {
+		if !errors.Is(err, auth.ErrorGOAuth2) {
 			log.Panic(err)
 		}
 	} else {
