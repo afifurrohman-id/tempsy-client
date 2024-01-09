@@ -3,6 +3,8 @@ name: CI & CD Production Environment
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
