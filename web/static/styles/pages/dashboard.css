@@ -25,7 +25,6 @@ ul .card {
 .card h2 {
     font-size: 1rem;
     font-weight: lighter;
-    text-decoration: underline;
 }
 
 .card p {
@@ -34,9 +33,7 @@ ul .card {
 }
 
 .card a {
-    text-decoration: none;
-    color: inherit;
-    border-radius: 999px;
+    border-radius: 99em;
     padding: 5px 10px;
     width: max-content;
     background-color: orange;
