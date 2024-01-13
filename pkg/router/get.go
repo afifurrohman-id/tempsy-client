@@ -25,7 +25,7 @@ func HandleDashboardClient(ctx *fiber.Ctx) error {
 		log.Panic("invalid_user_struct")
 	}
 
-	agent := fiber.Get(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
+	agent := fiber.Get(fmt.Sprintf("%s/files/%s?limit=%d&name=%s&size=%d&type=%s", os.Getenv("API_SERVER_URL"), ctx.Params("username"), ctx.QueryInt("limit"), ctx.Query("name"), ctx.QueryInt("size"), ctx.Query("type")))
 
 	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+ctx.Locals("token").(string))
