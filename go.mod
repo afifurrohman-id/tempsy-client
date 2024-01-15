@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.0
-	github.com/gofiber/template/html/v2 v2.0.5
+	github.com/gofiber/template/html/v2 v2.1.0
 	github.com/joho/godotenv v1.5.1
 )
 
