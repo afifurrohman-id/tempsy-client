@@ -20,7 +20,7 @@ func FormatDate(date int64) string {
 }
 
 const (
-	HeaderAutoDeletedAt     = "File-Auto-Deleted-At"
+	HeaderAutoDeleteAt     = "File-Auto-Delete-At"
 	HeaderPrivateUrlExpires = "File-Private-Url-Expires"
 	HeaderIsPublic          = "File-Is-Public"
 	HeaderFileName          = "File-Name"

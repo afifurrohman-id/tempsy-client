@@ -21,8 +21,8 @@ deleteBtn && deleteBtn.addEventListener('click', async () => {
                 if (confirm('Delete successful, do you want to Logout as well?')) location.href = '/auth/logout'
                 else location.reload()
             } else {
-                const { errorDescription } = await res.json()
-                confirm(errorDescription+ ', Do you want to refresh the page?') && location.reload()
+                const { apiError } = await res.json()
+                confirm(apiError.description+ ', Do you want to refresh the page?') && location.reload()
         }
     }
 })

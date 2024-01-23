@@ -20,7 +20,7 @@ func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
 	agent.Set(fiber.HeaderContentType, ctx.Get(fiber.HeaderContentType))
 	agent.Set(utils.HeaderIsPublic, ctx.Get(utils.HeaderIsPublic))
 	agent.Set(utils.HeaderPrivateUrlExpires, ctx.Get(utils.HeaderPrivateUrlExpires))
-	agent.Set(utils.HeaderAutoDeletedAt, ctx.Get(utils.HeaderAutoDeletedAt))
+	agent.Set(utils.HeaderAutoDeleteAt, ctx.Get(utils.HeaderAutoDeleteAt))
 	agent.Set(utils.HeaderFileName, ctx.Get(utils.HeaderFileName))
 
 	apiRes := new(models.DataFile)
@@ -48,7 +48,7 @@ func HandleUpdateDataClient(ctx *fiber.Ctx) error {
 	agent.Set(fiber.HeaderContentType, ctx.Get(fiber.HeaderContentType))
 	agent.Set(utils.HeaderIsPublic, ctx.Get(utils.HeaderIsPublic))
 	agent.Set(utils.HeaderPrivateUrlExpires, ctx.Get(utils.HeaderPrivateUrlExpires))
-	agent.Set(utils.HeaderAutoDeletedAt, ctx.Get(utils.HeaderAutoDeletedAt))
+	agent.Set(utils.HeaderAutoDeleteAt, ctx.Get(utils.HeaderAutoDeleteAt))
 
 	apiRes := new(models.DataFile)
 	statusCode, body, errs := agent.Struct(&apiRes)

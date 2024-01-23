@@ -7,7 +7,7 @@ function doUpload(file, handler) {
     fileInfo.innerHTML = `
                      ${file ? `<h4>Name: <code>${file.name.length > MAX_FILE_NAME_LENGTH ? `${file.name.substring(0, MAX_FILE_NAME_LENGTH)}...` : file.name}</code></h4>`:`<h4>No file selected</h4>`}
                      <label>
-                            Automatic Deleted At: <input type="datetime-local">
+                            Automatic Delete At: <input type="datetime-local">
                      </label>
                      <label>
                          Private Url Expires (Seconds): <input type="number" max="604800" min="2" >
@@ -20,15 +20,15 @@ function doUpload(file, handler) {
                     <button type="submit" class="btn-upload">Upload</button>
                     `
     let metadata = {
-            autoDeletedAt: Date.now(),
+            autoDeleteAt: Date.now(),
             isPublic: false,
-            xPrivateUrlExpires: 10 // 10 seconds
+            privateUrlExpires: 10 // 10 seconds
     }
 
     document.querySelector('#file-info input[type="datetime-local"]').addEventListener('input', ({currentTarget}) => {
         metadata = {
             ...metadata,
-            autoDeletedAt: Date.parse(currentTarget.value)
+            autoDeleteAt: Date.parse(currentTarget.value)
         }
     })
 
@@ -42,7 +42,7 @@ function doUpload(file, handler) {
     document.querySelector('#file-info input[type="number"]').addEventListener('input', ({currentTarget}) => {
         metadata = {
             ...metadata,
-            xPrivateUrlExpires: currentTarget.value
+            privateUrlExpires: currentTarget.value
         }
     })
 

@@ -14,10 +14,10 @@ doFile(async (file, metadata) => {
         method: 'POST',
         headers: {
             'Content-Type': file.type,
-            'File-Auto-Deleted-At': metadata.autoDeletedAt,
+            'File-Auto-Delete-At': metadata.autoDeleteAt,
             'File-Is-Public': metadata.isPublic,
             'File-Name': file.name,
-            'File-Private-Url-Expires': metadata.xPrivateUrlExpires,
+            'File-Private-Url-Expires': metadata.privateUrlExpires,
         },
         body: file,
     })

@@ -23,7 +23,7 @@ type DataFile struct {
 	Name              string `json:"name"`
 	Url               string `json:"url"`
 	ContentType       string `json:"type"`
-	AutoDeletedAt     int64  `json:"autoDeletedAt"`
+	AutoDeleteAt      int64  `json:"autoDeleteAt"`
 	PrivateUrlExpires uint   `json:"privateUrlExpires"`
 	UploadedAt        int64  `json:"uploadedAt"`
 	UpdatedAt         int64  `json:"updatedAt"`
@@ -45,7 +45,11 @@ type GOAuth2Token struct {
 	ExpiresIn    int    `json:"expires_in"`
 }
 
+type Error struct {
+	Kind        string `json:"kind"`
+	Description string `json:"description"`
+}
+
 type ApiError struct {
-	Type        string `json:"errorType"`
-	Description string `json:"errorDescription"`
+	*Error `json:"apiError"`
 }

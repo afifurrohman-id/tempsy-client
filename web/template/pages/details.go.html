@@ -26,12 +26,12 @@
         <h1>File Details</h1>
         <h2>Name: {{.Name}}</h2>
         <p>Url: <a href={{.Url}}><code><u>{{.Url}}</u></code></a></p>
-            <p>PrivateUrl Expires: {{.PrivateUrlExpires}} Seconds</p>
+            <p>Private Url Expires: {{.PrivateUrlExpires}} Seconds</p>
         <p>Size: {{.Size}} Bytes</p>
         <p>Type: {{.ContentType}}</p>
         <p>UploadedAt: {{.UploadedAt}}</p>
         <p>UpdatedAt: {{.UpdatedAt}}</p>
-        <p>Automatic Deleted At: {{.AutoDeletedAt}}</p>
+        <p>Automatic Delete At: {{.AutoDeleteAt}}</p>
             {{if .IsPublic }}
                 <p>Public: Yes</p>
             {{else}}

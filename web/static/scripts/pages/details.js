@@ -18,9 +18,9 @@ doFile(async (file, metadata) => {
         body: file,
         headers: {
             'Content-Type': file.type,
-            'File-Private-Url-Expires': metadata.xPrivateUrlExpires,
+            'File-Private-Url-Expires': metadata.privateUrlExpires,
             'File-Is-Public': metadata.isPublic,
-            'File-Auto-Deleted-At': metadata.autoDeletedAt
+            'File-Auto-Delete-At': metadata.autoDeleteAt
         }
     })
 
@@ -30,8 +30,8 @@ doFile(async (file, metadata) => {
         alert('Updated File successfully')
         location.reload()
     } else {
-        const {errorDescription} = await res.json()
-        confirm(errorDescription+ ' Do you want to refresh the page?') && location.reload()
+        const {apiError} = await res.json()
+        confirm(apiError.description+ ' Do you want to refresh the page?') && location.reload()
     }
 })
 
@@ -50,8 +50,8 @@ doFile(async (file, metadata) => {
                 const username = location.pathname.split('/')[2]
                 location.href = '/dashboard/' + username
             } else {
-                const {errorDescription} = await res.json()
-                confirm(errorDescription+ ', Do you want to refresh the page?') && location.reload()
+                const {apiError} = await res.json()
+                confirm(apiError.description+ ', Do you want to refresh the page?') && location.reload()
             }
         }
     })

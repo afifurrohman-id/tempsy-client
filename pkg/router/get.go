@@ -124,12 +124,12 @@ func HandleDetailDataClient(ctx *fiber.Ctx) error {
 			*models.DataFile
 			UploadedAt    string
 			UpdatedAt     string
-			AutoDeletedAt string
+			AutoDeleteAt string
 		}{
 			DataFile:      apiRes,
 			UploadedAt:    utils.FormatDate(apiRes.UploadedAt),
 			UpdatedAt:     utils.FormatDate(apiRes.UpdatedAt),
-			AutoDeletedAt: utils.FormatDate(apiRes.AutoDeletedAt),
+			AutoDeleteAt: utils.FormatDate(apiRes.AutoDeleteAt),
 		},
 		"type": "Update",
 	})
