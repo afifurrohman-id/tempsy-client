@@ -29,7 +29,7 @@
                 {{ range $_, $file := .files }}
                 <li class="card">
                     <h1>{{$file.Name}}</h1>
-                    <h2>Type: <i>{{$file.ContentType}}</i></h2>
+                    <h2>Type: <i>{{$file.MimeType}}</i></h2>
                     {{if $file.IsPublic}}
                     <h3>File Is Publicly Accessible</h3>
                     {{end}}
