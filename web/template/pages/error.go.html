@@ -6,6 +6,7 @@
     <meta name="description" content="Error Happen - {{.code}}">
     <link rel="stylesheet" href="/public/styles/utils/base.css">
     <link rel="stylesheet" href="/public/styles/pages/error.css">
+    <link rel="stylesheet" href="/public/styles/components/footer.css">
     <script type="module" src="/public/scripts/pages/error.js"></script>
     <title>Error - {{ .code }}</title>
 </head>
@@ -18,5 +19,6 @@
       <button>Reload page</button>
     {{ end }}
   </main>
+  {{template "components/footer" . }}
 </body>
 </html>

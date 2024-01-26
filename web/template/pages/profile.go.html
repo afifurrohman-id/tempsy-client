@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/public/styles/utils/base.css">
     <link rel="stylesheet" href="/public/styles/pages/profile.css">
     <link rel="stylesheet" href="/public/styles/components/loader.css">
+    <link rel="stylesheet" href="/public/styles/components/footer.css">
     <script type="module" src="/public/scripts/pages/profile.js"></script>
 </head>
 <body>
@@ -26,6 +27,7 @@
         Delete All Files</button>
         {{end}}
     {{end}}
-</main>
-</body>
+    </main>
+    {{template "components/footer" . }}
+  </body>
 </html>
