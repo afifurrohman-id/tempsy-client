@@ -6,9 +6,7 @@ import Loader from '../components/loader.js'
 setupTheme()
 setupUserNav()
 
-{
-  document.querySelector('.upload-area').setAttribute('open', '')
-}
+document.querySelector('.upload-area').setAttribute('open', '')
 
 doFile(async (file, metadata) => {
     Loader(true)
@@ -35,9 +33,8 @@ doFile(async (file, metadata) => {
     }
 })
 
-{
-    const deleteBtn = document.querySelector('.delete-btn')
-    deleteBtn.addEventListener('click', async () => {
+const deleteBtn = document.querySelector('.delete-btn')
+deleteBtn.addEventListener('click', async () => {
         if (confirm('Are you sure?, this action cannot be undone')) {
             Loader(true)
       
@@ -54,5 +51,4 @@ doFile(async (file, metadata) => {
                 confirm(apiError.description+ ', Do you want to refresh the page?') && location.reload()
             }
         }
-    })
-}
+})
