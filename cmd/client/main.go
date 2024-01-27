@@ -60,7 +60,7 @@ func main() {
 	routeDashboardUser.Get("/:name", router.HandleDetailDataClient)
 
 	routeDashboardUser.Use(middleware.SetRealIpClient)
-	routeDashboardUser.Post("/", router.HandleUploadDashboardClient)
+	routeDashboardUser.Post("/", router.HandleUploadDataClient)
 	routeDashboardUser.Put("/:name", router.HandleUpdateDataClient)
 	routeDashboardUser.Delete("/profile", router.HandleDeleteAllDataClient)
 	routeDashboardUser.Delete("/:name", router.HandleDeleteDataClient)

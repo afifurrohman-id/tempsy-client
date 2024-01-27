@@ -11,7 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 )
 
-func HandleUploadDashboardClient(ctx *fiber.Ctx) error {
+func HandleUploadDataClient(ctx *fiber.Ctx) error {
 	agent := fiber.Post(fmt.Sprintf("%s/files/%s", os.Getenv("API_SERVER_URL"), ctx.Params("username")))
 
 	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)

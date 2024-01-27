@@ -22,7 +22,7 @@ type GoogleAccountInfo struct {
 type DataFile struct {
 	Name              string `json:"name"`
 	Url               string `json:"url"`
-	MimeType      	  string `json:"mimeType"`
+	MimeType          string `json:"mimeType"`
 	AutoDeleteAt      int64  `json:"autoDeleteAt"`
 	PrivateUrlExpires uint   `json:"privateUrlExpires"`
 	UploadedAt        int64  `json:"uploadedAt"`
