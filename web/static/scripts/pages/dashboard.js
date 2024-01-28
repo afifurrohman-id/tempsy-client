@@ -1,14 +1,8 @@
-import {setupUserNav} from '../components/user-nav.js'
-import {setupTheme} from '../utils/theme.js'
-import loader from '../components/loader.js'
-import {doFile} from '../components/upload.js'
-import Loader from '../components/loader.js'
-
-setupUserNav()
-setupTheme()
+import loading from '../components/loader.js'
+import { doFile } from '../components/upload.js'
 
 doFile(async (file, metadata) => {
-    Loader(true)
+    loading(true)
 
     const res = await fetch(location.href, {
         method: 'POST',
@@ -22,13 +16,13 @@ doFile(async (file, metadata) => {
         body: file,
     })
 
-    Loader()
+    loading()
     if (res.ok) {
         alert('Upload successfully')
         location.reload()
     } else {
-        const {apiError} = await res.json()
-        confirm(apiError.description+ ', Do you want to refresh the page?') && location.reload()
+        const { apiError } = await res.json()
+        confirm(apiError.description + ', Do you want to refresh the page?') && location.reload()
     }
 
 })

@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {{template "components/meta" .}}
 
-    <meta name="description" content="Error Happen - {{.code}}">
-    <link rel="stylesheet" href="/public/styles/utils/base.css">
-    <link rel="stylesheet" href="/public/styles/pages/error.css">
-    <link rel="stylesheet" href="/public/styles/components/footer.css">
-    <script type="module" src="/public/scripts/pages/error.js"></script>
-    <title>Error - {{ .code }}</title>
+<head>
+  {{template "components/meta" .}}
+
+  <meta name="description" content="Error Happen - {{.code}}">
+  <link rel="stylesheet" href="/public/styles/utils/base.css">
+  <link rel="stylesheet" href="/public/styles/pages/error.css">
+  <link rel="stylesheet" href="/public/styles/components/footer.css">
+  <script src="/public/scripts/pages/error.js" defer></script>
+  <title>Error - {{ .code }}</title>
 </head>
+
 <body>
   <main>
     <h1>{{.message}}</h1>
     {{ if eq .code 404 }}
-      <a href="/">Back to home</a>
+    <a href="/">Back to home</a>
     {{ else }}
-      <button>Reload page</button>
+    <button>Reload page</button>
     {{ end }}
   </main>
   {{template "components/footer" . }}
 </body>
+
 </html>
