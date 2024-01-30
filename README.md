@@ -30,7 +30,6 @@ cd tempsy-client
 - Insert Variable to `.env` file
 
 ```sh
-
 cat <<EOENV > configs/.env
 
 OAUTH2_CONFIG={"clientId": "EXAMPLE_CLIENT_ID","clientSecret": "EXAMPLE_SECRET","callbackUrl": "https://example.com/auth","scopes": ["https://www.googleapis.com/auth/userinfo.profile"]}
@@ -39,7 +38,6 @@ API_SERVER_URL=https://api.example.com
 PORT=8080
 
 EOENV
-
 ```
 
 - Download dependencies
