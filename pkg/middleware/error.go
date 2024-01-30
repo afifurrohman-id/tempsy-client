@@ -9,8 +9,7 @@ import (
 )
 
 func CatchServerError(ctx *fiber.Ctx, err error) error {
-	fiberError := new(fiber.Error)
-	if errors.As(err, &fiberError) {
+	if fiberError := new(fiber.Error); errors.As(err, &fiberError) {
 		log.Error("Fiber Error - ", fiberError)
 
 		if fiberError.Code == fiber.StatusNotFound {

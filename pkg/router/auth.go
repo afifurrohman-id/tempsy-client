@@ -69,6 +69,7 @@ func AuthLogin(ctx *fiber.Ctx) error {
 
 		agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/guest/token")
 
+		agent.Timeout(utils.DefaultApiTimeout)
 		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
 
 		apiRes := new(models.GuestToken)
@@ -78,9 +79,6 @@ func AuthLogin(ctx *fiber.Ctx) error {
 		}
 
 		if statusCode != fiber.StatusOK {
-			if statusCode == fiber.StatusBadRequest {
-				return ctx.Redirect("/")
-			}
 			return ctx.Render("pages/error", map[string]any{
 				"code":    statusCode,
 				"message": string(body),

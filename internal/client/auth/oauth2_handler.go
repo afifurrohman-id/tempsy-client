@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
+	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,6 +27,7 @@ func (gO2Conf *GOAuth2Config) ExchangeCode(code string) (*models.GOAuth2Token, e
 	payloadFormUri := fmt.Sprintf("code=%s&redirect_uri=%s&client_id=%s&client_secret=%s&scope=&grant_type=authorization_code", code, gO2Conf.CallbackURL, gO2Conf.ClientID, gO2Conf.ClientSecret)
 
 	agent := fiber.Post("https://oauth2.googleapis.com/token")
+	agent.Timeout(utils.DefaultApiTimeout)
 	agent.Body([]byte(payloadFormUri))
 	agent.Set(fiber.HeaderContentType, "application/x-www-form-urlencoded")
 
@@ -50,6 +52,7 @@ func (gO2Conf *GOAuth2Config) AccessToken(refreshToken string) (*models.GOAuth2T
 
 	agent := fiber.Post("https://oauth2.googleapis.com/token")
 
+	agent.Timeout(utils.DefaultApiTimeout)
 	agent.Body([]byte(payloadFormUri))
 	agent.Set(fiber.HeaderContentType, "application/x-www-form-urlencoded")
 
@@ -74,6 +77,7 @@ func (gO2Conf *GOAuth2Config) RevokeAccessToken(accessToken string) error {
 
 	agent := fiber.Post("https://oauth2.googleapis.com/revoke")
 
+	agent.Timeout(utils.DefaultApiTimeout)
 	agent.Body([]byte(payloadFormUri))
 	agent.Set(fiber.HeaderContentType, "application/x-www-form-urlencoded")
 

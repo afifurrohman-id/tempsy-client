@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
 	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
@@ -31,13 +30,10 @@ func New() (*GOAuth2Config, error) {
 }
 
 func GetGoogleAccountInfo(accessToken string) (*models.GoogleAccountInfo, error) {
-	const timeout = 10 * time.Second
-
 	agent := fiber.Get("https://www.googleapis.com/userinfo/v2/me")
 
+	agent.Timeout(utils.DefaultApiTimeout)
 	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+accessToken)
-	// TODO: Add parameter timeout
-	agent.Timeout(timeout)
 
 	userinfo := new(models.GoogleAccountInfo)
 

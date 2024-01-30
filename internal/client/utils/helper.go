@@ -26,4 +26,5 @@ const (
 	HeaderFileName          = "File-Name"
 	HeaderRealIp            = "Real-IP"
 	BearerPrefix            = "Bearer "
+	DefaultApiTimeout       = 20 * time.Second
 )
