@@ -2,9 +2,7 @@ package middleware
 
 import (
 	"errors"
-	"os"
 	"strings"
-	"time"
 
 	"github.com/afifurrohman-id/tempsy-client/internal/client/auth"
 	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
@@ -23,29 +21,29 @@ func CheckAuth(ctx *fiber.Ctx) error {
 	utils.Check(err)
 
 	tokens, err := o2.AccessToken(token)
-
-	// TODO:Validate if user is authorized
 	if err != nil {
 		// try to get guest user
-		if errors.Is(err, auth.ErrorGOAuth2) {
-			agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/userinfo/me")
-
-			agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-			agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+token)
-
-			apiRes := new(models.User)
-			agent.Timeout(10 * time.Second)
-			statusCode, _, errs := agent.Struct(&apiRes)
-			if len(errs) > 0 {
-				log.Panic(errs[0])
+		if errAuth := new(auth.ErrorAuth); errors.As(err, &errAuth) {
+			apiRes, err := auth.GetUserInfo(token)
+			if err != nil {
+				if errors.As(err, &errAuth) {
+					if path == "/" {
+						return ctx.Next()
+					}
+					return ctx.Redirect("/auth/login")
+				}
+				log.Panic(err)
 			}
 
-			if statusCode != fiber.StatusOK || !strings.HasPrefix(apiRes.UserName, auth.GuestUsernamePrefix) {
+			if !strings.Contains(apiRes.UserName, auth.GuestUsernamePrefix) {
+				// for root path it will render no user.
 				if path == "/" {
 					return ctx.Next()
 				}
+
 				return ctx.Redirect("/auth/login")
 			}
+
 			user = apiRes
 			user.Picture = "https://placehold.co/96x96/png?text=a"
 		} else {

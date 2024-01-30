@@ -2,11 +2,13 @@ package router
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/afifurrohman-id/tempsy-client/internal/client/auth"
 	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
 	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
 	"github.com/gofiber/fiber/v2"
@@ -63,25 +65,17 @@ func HandleProfileClient(ctx *fiber.Ctx) error {
 	lastLoginMs, err := strconv.ParseInt(ctx.Cookies("last_login", fmt.Sprintf("%d", time.Now().UnixMilli())), 10, 64)
 	utils.Check(err)
 
-	agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/userinfo/me")
+	apiRes, err := auth.GetUserInfo(ctx.Locals("token").(string))
 
-	agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-	agent.Set(fiber.HeaderAuthorization, utils.BearerPrefix+ctx.Locals("token").(string))
+	if err != nil {
+		if errAuth := new(auth.ErrorAuth); errors.As(err, &errAuth) {
+			return ctx.Render("pages/error", map[string]any{
+				"code":    errAuth.Code,
+				"message": errAuth.Reason,
+			})
+		}
 
-	apiRes := new(models.User)
-	statusCode, body, errs := agent.Struct(&apiRes)
-	if len(errs) > 0 {
-		log.Panic(errs[0])
-	}
-
-	if statusCode != fiber.StatusOK {
-		apiErr := new(models.ApiError)
-		utils.Check(json.Unmarshal(body, &apiErr))
-
-		return ctx.Render("pages/error", map[string]any{
-			"code":    statusCode,
-			"message": apiErr.Description,
-		})
+		log.Panic(err)
 	}
 
 	return ctx.Render("pages/profile", map[string]any{

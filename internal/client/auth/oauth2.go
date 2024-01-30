@@ -2,7 +2,6 @@ package auth
 
 import (
 	"encoding/json"
-	"errors"
 	"os"
 	"strings"
 	"time"
@@ -10,10 +9,7 @@ import (
 	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
 	"github.com/afifurrohman-id/tempsy-client/internal/client/utils"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 )
-
-var ErrorGOAuth2 = errors.New("oauth2_error_response_code_not_ok")
 
 type GOAuth2Config struct {
 	ClientID     string   `json:"clientId"`
@@ -51,8 +47,10 @@ func GetGoogleAccountInfo(accessToken string) (*models.GoogleAccountInfo, error)
 	}
 
 	if statusCode != fiber.StatusOK {
-		log.Errorf("response_from_%d_body_%s", statusCode, string(body))
-		return nil, ErrorGOAuth2
+		return nil, &ErrorAuth{
+			Code:   statusCode,
+			Reason: string(body),
+		}
 	}
 
 	userinfo.UserName = strings.ReplaceAll(strings.Join(strings.SplitN(userinfo.Email, "@", 2), "-"), ".", "-")

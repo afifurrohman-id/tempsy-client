@@ -22,7 +22,7 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 
 	tokens, err := oAuth2.ExchangeCode(ctx.Query("code"))
 	if err != nil {
-		if errors.Is(err, auth.ErrorGOAuth2) {
+		if errAuth := new(auth.ErrorAuth); errors.As(err, &errAuth) {
 			return ctx.Redirect("/auth/login")
 		}
 		log.Panic(err)
@@ -52,9 +52,21 @@ func OAuth2Callback(ctx *fiber.Ctx) error {
 	return ctx.Redirect("/dashboard/" + user.UserName)
 }
 
-// AuthLogin  TODO: More validation
 func AuthLogin(ctx *fiber.Ctx) error {
+	token := ctx.Cookies("token")
+	oAuth2, err := auth.New()
+	utils.Check(err)
+
+	if _, err := oAuth2.AccessToken(token); err == nil {
+		return ctx.Redirect("/")
+	}
+
+	if _, err = auth.GetUserInfo(token); err == nil {
+		return ctx.Redirect("/")
+	}
+
 	if ctx.Query("type", "oauth2") == "guest" {
+
 		agent := fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/guest/token")
 
 		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
@@ -93,29 +105,19 @@ func AuthLogin(ctx *fiber.Ctx) error {
 			HTTPOnly: os.Getenv("APP_ENV") == "production",
 		})
 
-		agent = fiber.Get(os.Getenv("API_SERVER_URL") + "/auth/userinfo/me")
-
-		agent.Set(fiber.HeaderAccept, fiber.MIMEApplicationJSON)
-		agent.Set(fiber.HeaderAuthorization, apiRes.AccessToken)
-
-		apiResUser := new(models.User)
-		statusCode, body, errs = agent.Struct(&apiResUser)
-		if len(errs) > 0 {
-			log.Panic(errs[0])
-		}
-
-		if statusCode != fiber.StatusOK {
-			return ctx.Render("pages/error", map[string]any{
-				"code":    statusCode,
-				"message": string(body),
-			})
+		apiResUser, err := auth.GetUserInfo(apiRes.AccessToken)
+		if err != nil {
+			if errAuth := new(auth.ErrorAuth); errors.As(err, &errAuth) {
+				return ctx.Render("pages/error", map[string]any{
+					"code":    errAuth.Code,
+					"message": errAuth.Reason,
+				})
+			}
+			log.Panic(err)
 		}
 
 		return ctx.Redirect("/dashboard/" + apiResUser.UserName)
 	}
-
-	oAuth2, err := auth.New()
-	utils.Check(err)
 
 	return ctx.Redirect(oAuth2.RedirectUrl())
 }
@@ -126,7 +128,7 @@ func AuthLogout(ctx *fiber.Ctx) error {
 
 	tokens, err := oAuth2.AccessToken(ctx.Cookies("token")) // refresh token if oauth2 or access token if guest
 	if err != nil {
-		if !errors.Is(err, auth.ErrorGOAuth2) {
+		if errAuth := new(auth.ErrorAuth); !errors.As(err, &errAuth) {
 			log.Panic(err)
 		}
 	} else {
@@ -146,7 +148,7 @@ func AuthLogout(ctx *fiber.Ctx) error {
 	ctx.Cookie(&fiber.Cookie{
 		Name:     "last_login",
 		Path:     "/",
-		Expires:  time.Now().Add(-3 * time.Second), // 3 seconds ago, to delete cookie
+		Expires:  time.Now().Add(-3 * time.Second),
 		Secure:   os.Getenv("APP_ENV") == "production",
 		HTTPOnly: os.Getenv("APP_ENV") == "production",
 	})

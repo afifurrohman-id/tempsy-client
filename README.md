@@ -11,7 +11,7 @@
 - [x] Git (version >= 2.43.x)
 - [x] Go (version >= 1.21.x)
 - [ ] Docker (version >= 24.0.x)
-  > optional, only if you want to build image)
+  > optional, (only need if you want to build image)
 
 ## Installation
 

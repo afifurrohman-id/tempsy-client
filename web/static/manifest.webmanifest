@@ -8,6 +8,7 @@
     "background_color": "#ffffff",
     "theme_color": "#fbbf24",
     "display": "standalone",
+    "lang": "en",
     "icons": [
         {
             "src": "https://acbtwffwdoxzwlfgpisu.supabase.co/storage/v1/object/public/projects/tempsy/images/icons/icon-48x48.png",
@@ -29,14 +30,14 @@
     ],
     "screenshots": [
         {
-            "src": "https://acbtwffwdoxzwlfgpisu.supabase.co/storage/v1/object/public/projects/tempsy/images/screenshot/mac.png",
+            "src": "https://acbtwffwdoxzwlfgpisu.supabase.co/storage/v1/object/public/projects/tempsy/images/screenshots/mac.png",
             "sizes": "1280x720",
             "type": "image/png",
             "form_factor": "wide",
             "label": "Tempsy in Mac"
         },
         {
-            "src": "https://acbtwffwdoxzwlfgpisu.supabase.co/storage/v1/object/public/projects/tempsy/images/screenshot/mac.png",
+            "src": "https://acbtwffwdoxzwlfgpisu.supabase.co/storage/v1/object/public/projects/tempsy/images/screenshots/mobile.png",
             "sizes": "388x786",
             "type": "image/png",
             "form_factor": "narrow",

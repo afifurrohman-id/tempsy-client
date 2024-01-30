@@ -6,7 +6,6 @@ import (
 
 	"github.com/afifurrohman-id/tempsy-client/internal/client/models"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 )
 
 // RedirectUrl returns the url for redirecting to consent screen, if the configuration is not valid, it will return empty string
@@ -37,8 +36,10 @@ func (gO2Conf *GOAuth2Config) ExchangeCode(code string) (*models.GOAuth2Token, e
 	}
 
 	if statusCode != fiber.StatusOK {
-		log.Errorf("exchange_code_error_not_ok_status_code_%d_body_%s", statusCode, body)
-		return nil, ErrorGOAuth2
+		return nil, &ErrorAuth{
+			Code:   statusCode,
+			Reason: string(body),
+		}
 	}
 
 	return oToken, nil
@@ -59,8 +60,10 @@ func (gO2Conf *GOAuth2Config) AccessToken(refreshToken string) (*models.GOAuth2T
 	}
 
 	if statusCode != fiber.StatusOK {
-		log.Errorf("access_token_error_not_ok_status_code_%d_body_%s", statusCode, body)
-		return nil, ErrorGOAuth2
+		return nil, &ErrorAuth{
+			Code:   statusCode,
+			Reason: string(body),
+		}
 	}
 
 	return oToken, nil
@@ -81,8 +84,10 @@ func (gO2Conf *GOAuth2Config) RevokeAccessToken(accessToken string) error {
 	}
 
 	if statusCode != fiber.StatusOK {
-		log.Errorf("revoke_access_token_error_not_ok_status_code_%d_body_%s", statusCode, body)
-		return ErrorGOAuth2
+		return &ErrorAuth{
+			Code:   statusCode,
+			Reason: body,
+		}
 	}
 
 	return nil
