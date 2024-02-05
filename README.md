@@ -32,7 +32,7 @@ cd tempsy-client
 ```sh
 cat <<EOENV > configs/.env
 
-OAUTH2_CONFIG={"clientId": "EXAMPLE_CLIENT_ID","clientSecret": "EXAMPLE_SECRET","callbackUrl": "https://example.com/auth","scopes": ["https://www.googleapis.com/auth/userinfo.profile"]}
+OAUTH2_CONFIG={"clientId": "EXAMPLE_CLIENT_ID","clientSecret": "EXAMPLE_SECRET","callbackUrl": "https://example.com/auth","scopes": ["https://www.googleapis.com/auth/userinfo.profile"]} # Base64 Encoded JSON
 APP_ENV=testing
 API_SERVER_URL=https://api.example.com
 PORT=8080

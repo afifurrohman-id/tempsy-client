@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"os"
 	"strings"
@@ -18,11 +19,14 @@ type GOAuth2Config struct {
 }
 
 func New() (*GOAuth2Config, error) {
-	oConfJSON := os.Getenv("GOOGLE_OAUTH2_CONFIG")
+	oConfByte, err := base64.StdEncoding.DecodeString(os.Getenv("GOOGLE_OAUTH2_CONFIG"))
+	if err != nil {
+		return nil, err
+	}
 
 	oConf := new(GOAuth2Config)
 
-	if err := json.Unmarshal([]byte(oConfJSON), &oConf); err != nil {
+	if err := json.Unmarshal(oConfByte, &oConf); err != nil {
 		return nil, err
 	}
 
