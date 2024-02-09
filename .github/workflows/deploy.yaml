@@ -62,4 +62,5 @@ jobs:
           resourceGroup: ${{secrets.AZURE_RESOURCE_GROUP}}
           imageToDeploy: ${{env.IMAGE_NAME}}:${{github.sha}}
           targetPort: ${{secrets.PORT}}
+          ingress: internal
 
