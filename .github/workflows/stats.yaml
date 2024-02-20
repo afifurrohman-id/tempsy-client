@@ -1,6 +1,6 @@
 name: Statistics - Live
 
-on: [deployment_status]
+on: deployment_status
 
 jobs:
   lighthouse:

@@ -2,9 +2,9 @@ name: CI & CD Production Environment
 
 on:
   push:
-    branches: [main]
+    branches: main
   pull_request:
-    branches: [main]
+    branches: main
 
 jobs:
   test:
@@ -21,13 +21,12 @@ jobs:
     environment:
       name: production
       url: ${{github.event.repository.homepage}}
-    needs:
-      - test
+    needs: test
     permissions:
       packages: write
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: ghcr.io/${{github.repository_owner}}/${{github.event.repository.name}}
+      IMAGE_NAME: ghcr.io/${{github.repository}}
     steps:
       - uses: actions/checkout@v4
       
