@@ -2,14 +2,13 @@ package utils
 
 import (
 	"log"
-	"os"
 	"strings"
 	"time"
 )
 
 func Check(err error) {
 	if err != nil {
-		log.New(os.Stderr, "ERROR ", log.LstdFlags|log.Lshortfile).Panic(err)
+		log.Panic(err)
 	}
 }
 
